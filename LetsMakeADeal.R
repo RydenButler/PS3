@@ -1,5 +1,15 @@
-### S3
-# constructs class
+#' Construct S3 door Class
+#'
+#' Allows the user to pick a door number and creates an S3 class holding that
+#' door choice.
+#'
+#' @param choice A numeric scalar whole number from 1 to 3
+#'
+#' @return A door object containing the user's choice
+#'
+#' @export
+#' 
+
 door <- function(choice) {
   # stops function if choice is not numeric
   if (!is.numeric(choice)) stop('Choice must be a numeric!') 
@@ -11,10 +21,30 @@ door <- function(choice) {
   structure(list('choice' = choice), class = "door")
 }
 
-# create generic
+#' Creates S3 Generic Function for PlayGame
+#'
+#' Creates a PlayGame generic
+#'
+#' @param x An input corresponding to the proper method
+#'
+#' @return See specific method for return
+#'
+#' @export
+#' 
+
 PlayGame <- function(x) UseMethod('PlayGame')
 
-# create method
+#' Creates door method for PlayGame Generic
+#'
+#' Allows the user to play Let's Make a Deal
+#'
+#' @param door An S3 object of class door, containing a valid door choice.
+#'
+#' @return No object returned. Function prints outcome of game in console.
+#'
+#' @export
+#' 
+
 PlayGame.door <- function(door){
   # stops function if class is not door
   if(class(door) != 'door') stop('You must input an object of class door!')
@@ -30,6 +60,8 @@ PlayGame.door <- function(door){
   invisible()
 }
 
+#### Conduct a series of test for the S3 version of Let's Make a Deal
+
 # test non-numeric choice
 NumericTest <- door('a')
 
@@ -43,13 +75,28 @@ ValidDoorTest <- door(4)
 FunctionalTest <- door(1)
 PlayGame(FunctionalTest)
 
-# S4
-library(stats4)
 
-# create door class
+#' Construct S4 door Class
+#'
+#' Creates an S4 class named door. Door objects can be created with new()
+#'
+#' @export
+
 setClass('door', slots = list(choice = 'numeric'))
 
-# create test function
+#' Tests S4 door object for valid structure and input
+#'
+#' Tests whether an object is (1) an S4 object, (2) is of class door,
+#' (3) is a single door choice, (4) is an integer less than 4. 
+#'
+#' @param door Any object. The function will only return if door meets the 
+#' above criteria.
+#'
+#' @return None. Prints a message to the console indicating whether the door 
+#' object is valid for play. 
+#'
+#' @export
+
 TestDoor <- function(door){
   # stops function if door is not S4
   if(!isS4(door)) stop('Your door is not an S4 object!')
@@ -64,12 +111,32 @@ TestDoor <- function(door){
   else ('That door is a fair pick. Good luck!')
 }
 
-# create new generic for PlayGame
+#' Creates S4 Generic Function for PlayGame
+#'
+#' Creates a PlayGame generic
+#'
+#' @param choice An input corresponding to the proper method
+#'
+#' @return See specific method for return
+#'
+#' @export
+#' 
+
 setGeneric('PlayGame', function(choice){
   standardGeneric('PlayGame')
 })
 
-# create method for door
+#' Creates door method for PlayGame Generic
+#'
+#' Allows the user to play Let's Make a Deal with S4 door object.
+#'
+#' @param door An S4 object of class door, containing a valid door choice.
+#'
+#' @return No object returned. Function prints outcome of game in console.
+#'
+#' @export
+#' 
+
 setMethod('PlayGame',
           c(choice = 'door'),
           function(choice){
@@ -84,6 +151,8 @@ setMethod('PlayGame',
             # returns invisible
             invisible()
           })
+
+#### Conduct a series of test for the S3 version of Let's Make a Deal
 
 # test non-S4 object
 S4Test <- 1
